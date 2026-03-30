@@ -1,6 +1,5 @@
 import requests
 import time
-import sys
 
 # Configurações MR_BEANS1
 TOKEN_TG = "8536212315:AAFV9jLLfYEpB4J0GjrRN3ybeBQHjUWGh3c"
@@ -15,27 +14,21 @@ def enviar_telegram(msg):
         requests.post(url, data={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=10)
     except: pass
 
-# O 'flush=True' é o segredo para a tela do GitHub não ficar parada
 print("🚀 SNIPER GITHUB ATIVO - MR_BEANS1", flush=True)
 vistas = set()
-
-# Roda por 5 horas seguidas
-timeout = time.time() + (60 * 60 * 5)
+timeout = time.time() + (60 * 60 * 5) # Roda 5 horas seguidas
 
 while time.time() < timeout:
     for node in NODES:
         try:
             payload = {"account_name": "uplandmarket", "pos": -1, "offset": -50}
             r = requests.post(f"{node}/v1/history/get_actions", json=payload, timeout=10)
-            
             if r.status_code == 200:
                 actions = r.json().get("actions", [])
                 for action in reversed(actions):
                     seq = action.get("global_action_seq")
                     if seq not in vistas:
                         vistas.add(seq)
-                        if len(vistas) > 1000: vistas.clear()
-                        
                         act = action.get("action_trace", {}).get("act", {})
                         if act.get("name") in ["listprop", "updateprop", "n1", "n2"]:
                             data = act.get("data", {})
@@ -44,15 +37,9 @@ while time.time() < timeout:
                                 price = float(str(p_raw).split()[0])
                                 if 0 < price <= MAX_PRICE:
                                     prop_id = data.get("prop_id") or data.get("asset_id")
-                                    enviar_telegram(f"⚡ **GITHUB SNIPER: MR_BEANS1**\n💰 Preço: `{price:,.0f}` UPX\n🆔 ID: `{prop_id}`\n🔗 [Upland](https://play.upland.me/p/{prop_id})")
+                                    enviar_telegram(f"⚡ **SNIPER: MR_BEANS1**\n💰 Preço: `{price:,.0f}` UPX\n🆔 ID: `{prop_id}`\n🔗 [Abrir no Upland](https://play.upland.me/p/{prop_id})")
                                     print(f"✅ Alerta enviado: {price} UPX", flush=True)
                             except: continue
                 break
         except: continue
-    
-    # Imprime um ponto a cada 30s para o GitHub saber que ainda estamos aqui
-    if int(time.time()) % 30 == 0:
-        print(".", end="", flush=True)
-        
     time.sleep(2)
-
