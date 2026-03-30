@@ -1,8 +1,8 @@
 name: Sniper_Realtime
 on:
-  workflow_dispatch: # Isso cria o botão de "Play" manual
+  workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *' # Tenta religar sozinho a cada 30 min
+    - cron: '*/30 * * * *'
 
 jobs:
   run-sniper:
