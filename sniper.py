@@ -15,13 +15,13 @@ def enviar_telegram(msg):
         requests.post(url, data={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"}, timeout=10)
     except: pass
 
+# MENSAGEM DE TESTE - Assim que ligar, você deve receber isto no Telegram
+enviar_telegram("🚀 **MR_BEANS1 LIGADO!** Estou a começar a caçar agora...")
+
 print("🚀 SNIPER GITHUB ATIVO - MR_BEANS1", flush=True)
 vistas = set()
+timeout = time.time() + 18000 # 5 HORAS DE CAÇA
 
-# Define o tempo de funcionamento para 5 horas (18000 segundos)
-timeout = time.time() + 18000
-
-# ESTE LOOP É O QUE IMPEDE O SCRIPT DE PARAR EM 16 SEGUNDOS
 while time.time() < timeout:
     for node in NODES:
         try:
@@ -33,7 +33,6 @@ while time.time() < timeout:
                     seq = action.get("global_action_seq")
                     if seq not in vistas:
                         vistas.add(seq)
-                        if len(vistas) > 1000: vistas.clear()
                         act = action.get("action_trace", {}).get("act", {})
                         if act.get("name") in ["listprop", "updateprop", "n1", "n2"]:
                             data = act.get("data", {})
@@ -48,8 +47,8 @@ while time.time() < timeout:
                 break
         except: continue
     
-    # Imprime um ponto a cada 60s para o GitHub não achar que o script travou
-    if int(time.time()) % 60 == 0:
+    # Faz o console "respirar" para o GitHub não fechar por inatividade
+    if int(time.time()) % 30 == 0:
         print(".", end="", flush=True)
         
-    time.sleep(2) # Espera 2 segundos e procura de novo
+    time.sleep(2)
