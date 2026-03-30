@@ -10,5 +10,4 @@ jobs:
         with:
           python-version: '3.9'
       - run: pip install requests
-      - name: Executar Sniper
-        run: python sniper.py
+      - run: python sniper.py
