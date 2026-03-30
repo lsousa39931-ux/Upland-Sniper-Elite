@@ -17,7 +17,7 @@ def enviar_telegram(msg):
 
 print("🚀 SNIPER GITHUB ATIVO - MR_BEANS1", flush=True)
 vistas = set()
-timeout = time.time() + (60 * 60 * 5) # 5 horas de caça
+timeout = time.time() + (60 * 60 * 5) # 5 horas de duração
 
 while time.time() < timeout:
     for node in NODES:
@@ -30,7 +30,6 @@ while time.time() < timeout:
                     seq = action.get("global_action_seq")
                     if seq not in vistas:
                         vistas.add(seq)
-                        if len(vistas) > 1000: vistas.clear()
                         act = action.get("action_trace", {}).get("act", {})
                         if act.get("name") in ["listprop", "updateprop", "n1", "n2"]:
                             data = act.get("data", {})
@@ -44,7 +43,4 @@ while time.time() < timeout:
                             except: continue
                 break
         except: continue
-    
-    if int(time.time()) % 60 == 0:
-        print(".", end="", flush=True) # Sinal de vida para o GitHub
     time.sleep(2)
