@@ -1,4 +1,4 @@
-name: Sniper_Realtime 
+name: Sniper_Ativo_V2 
 on:
   workflow_dispatch:
 jobs:
