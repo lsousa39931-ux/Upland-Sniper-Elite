@@ -22,3 +22,4 @@ jobs:
 
       - name: Execute Sniper
         run: python sniper.py
+ 
