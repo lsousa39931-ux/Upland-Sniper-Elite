@@ -1,0 +1,19 @@
+name: Sniper_Realtime
+on:
+  workflow_dispatch: # Isso cria o botão de "Play" manual
+  schedule:
+    - cron: '*/30 * * * *' # Tenta religar sozinho a cada 30 min
+
+jobs:
+  run-sniper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Instalar Requests
+        run: pip install requests
+      - name: Executar Sniper
+        run: python sniper.py
