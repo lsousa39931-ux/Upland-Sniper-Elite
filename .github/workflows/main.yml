@@ -1,27 +1,14 @@
 name: Sniper_Realtime
-
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *'
-
 jobs:
   run-sniper:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Install Dependencies
-        run: pip install requests
-
-      - name: Execute Sniper
+      - run: pip install requests
+      - name: Executar Sniper
         run: python sniper.py
- 
-
-
